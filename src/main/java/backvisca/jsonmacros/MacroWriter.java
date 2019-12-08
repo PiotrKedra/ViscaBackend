@@ -51,6 +51,7 @@ public class MacroWriter {
         JSONObject object = new JSONObject();
         object.put("id", lastID + 1);
         object.put("name", macro.getName());
+        object.put("address", macro.getAddress());
         JSONArray commandsArray = getCommandsJSONArray(macro);
         object.put("commands", commandsArray);
         ++lastID;

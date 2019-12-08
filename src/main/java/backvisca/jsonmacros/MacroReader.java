@@ -52,8 +52,10 @@ public class MacroReader {
                 .collect(Collectors.toList());
         int id = (int)((long)macro.get("id"));
         String name = (String) macro.get("name");
+        int address = (int)((long)macro.get("address"));
 
-        return new Macro(id, name, commands);
+
+        return new Macro(id, name, address, commands);
     }
 
     private Command mapToCommand(JSONObject object) {
