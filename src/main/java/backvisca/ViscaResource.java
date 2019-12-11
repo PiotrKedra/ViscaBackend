@@ -30,10 +30,9 @@ public class ViscaResource {
     }
 
     @PostMapping("execute")
-    public ResponseEntity<Object> sendCommand(Commands commands){
-        viscaService.sendCommands(commands);
-        return ResponseEntity.ok()
-                .build();
+    public ResponseEntity<List<String>> sendCommand(@RequestBody Commands commands){
+        List<String> strings = viscaService.sendCommands(commands);
+        return ResponseEntity.ok(strings);
     }
 
     @PostMapping(value = "macro",  produces = "application/json")
@@ -49,13 +48,13 @@ public class ViscaResource {
     }
 
     @PostMapping(value = "macro/execute/{id}")
-    public ResponseEntity executeMacro(@PathVariable("id") int id){
+    public ResponseEntity<List<String>> executeMacro(@PathVariable("id") int id){
         List<Macro> macros = macroReader.getAll();
         Optional<Macro> macro = macros.stream().filter(m -> m.getId() == id).findFirst();
         if(macro.isPresent()){
-            Commands commands = new Commands(1, macro.get().getCommands());
-            viscaService.sendCommands(commands);
-            return ResponseEntity.ok().build();
+            Commands commands = new Commands(macro.get().getAddress(), macro.get().getCommands());
+            List<String> strings = viscaService.sendCommands(commands);
+            return ResponseEntity.ok(strings);
         }
         return ResponseEntity.status(404).build();
     }
